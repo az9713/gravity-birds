@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/level_data.gd" id="1_level_data"]
+
+[resource]
+script = ExtResource("1_level_data")
+level_name = "The Gap"
+grid_width = 10
+grid_height = 7
+tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1]
+fruits = [Vector2i(5, 4), Vector2i(7, 4)]
+exit_pos = Vector2i(8, 5)
+creature_start = [Vector2i(1, 5), Vector2i(1, 4), Vector2i(1, 3)]
