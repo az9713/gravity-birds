@@ -258,6 +258,22 @@
     font-size: 0.9rem;
   }
 
+
+  blockquote {
+    margin: 0.5rem 0 0.75rem;
+    padding: 0.55rem 0.9rem;
+    border-left: 3px solid var(--accent-dim);
+    background: var(--bg-elev);
+    border-radius: 0 6px 6px 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  blockquote p { margin: 0.25rem 0; }
+  table.msglog th:nth-child(1),
+  table.msglog td:nth-child(1) { white-space: nowrap; min-width: 7.5rem; }
+  table.msglog td:nth-child(2) { color: var(--accent); font-size: 0.88rem; }
+  .arrow { color: var(--muted); font-weight: 400; }
+
   @media print {
     :root {
       --bg: #fff;
@@ -301,6 +317,7 @@
     <li><a href="#cloud">Cursor Cloud Agent on Origin</a></li>
     <li><a href="#unknowns">The confusion wall (unknown unknowns)</a></li>
     <li><a href="#timeline">Timeline of autonomous steps</a></li>
+    <li><a href="#comms">How the Grok Bots talked to each other</a></li>
     <li><a href="#warts">Post-ship gameplay fixes (warts)</a></li>
     <li><a href="#fix-commits">Where the fix commits live</a></li>
     <li><a href="#rehome">GitHub re-home + laptop pull</a></li>
@@ -375,6 +392,9 @@
       <div class="title">Clear team map</div>
       <p>
         Frank, Stuart, Bess, and other roster bots were <strong>not</strong> on this job. If you only hear three names for Gravity Birds, that is intentional — not a missing handoff.
+      </p>
+      <p>
+        <strong>Tess Tester</strong> (QA) was created <em>after</em> this game shipped — an optional later role for playtest/QA loops, not part of this build’s message graph.
       </p>
     </div>
   </div>
@@ -548,8 +568,177 @@
   </ol>
 </section>
 
+
+<section id="comms">
+  <h2>8. How the Grok Bots talked to each other</h2>
+  <p>
+    This section demystifies <strong>inter-GrokBot messaging</strong> during the Gravity Birds job —
+    who pinged whom, what “priority” means, and why specialist replies often show up in Chief’s chat.
+  </p>
+
+  <h3>The mechanism (plain language)</h3>
+  <ul>
+    <li>
+      Each Grok Bot is a <strong>separate chat / assistant</strong> with its own memory.
+      Chief does not share one brain with Devin or Rex.
+    </li>
+    <li>
+      <strong>Chief is your single point of contact.</strong> Specialists do not all ping you for every step;
+      they report to Chief, and Chief talks to you.
+    </li>
+    <li>
+      Bots message each other <strong>asynchronously</strong> (tool: SendToAgent).
+      It is not a live Slack huddle — one bot sends, continues its own work, and the reply arrives later as its own turn.
+    </li>
+    <li>
+      <code>priority=true</code> wakes the other bot <em>now</em> for work someone is waiting on.
+      <code>priority=false</code> is FYI held until their next turn.
+    </li>
+    <li>
+      You often <em>see</em> specialist messages appear in Chief’s chat when they report back —
+      that is intentional visibility, not you being CC’d into every private tool call.
+    </li>
+    <li>
+      <strong>Cloud Agents are Cursor VMs</strong> steered by Devin; they are <em>not</em> Grok Bots.
+      Devin talks to Cloud Agents; Chief talks to Devin.
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <p><strong>What this is not</strong></p>
+    <ul>
+      <li>Not Cognition’s “Devin” product — our Devin is the Grok Bot labeled Development.</li>
+      <li>Not all bots in one shared brain — each has its own chat memory.</li>
+      <li>Not automatic fan-out — Chief decided who to wake for this job.</li>
+      <li>Frank, Stuart, and Bess were idle; Tess Tester did not exist yet for this build.</li>
+    </ul>
+  </div>
+
+  <h3>Message log (Gravity Birds collaboration)</h3>
+  <p>
+    Chronological, paraphrased, scrubbed. Short quotes in blockquotes where useful.
+    Intent column = why the message was sent.
+  </p>
+  <table class="msglog">
+    <thead>
+      <tr>
+        <th>From → To</th>
+        <th>Intent</th>
+        <th>What was said (paraphrase)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>You <span class="arrow">→</span> Chief</td>
+        <td>Kickoff</td>
+        <td>
+          Build a Snakebird-like puzzle; must use Cursor; ask clarifying questions before coding.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Devin</td>
+        <td>Dispatch build</td>
+        <td>
+          Godot 4; Cursor Cloud Agent with Origin <code>new_repo</code>; original mechanics; 5 levels; HTML5 path.
+          Do not wait on perfection — start the agent.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Rex</td>
+        <td>Research brief</td>
+        <td>
+          Short Snakebird-<em>inspired</em> mechanics checklist for Devin’s CloudAgent prompt;
+          public sources only; no IP theft.
+        </td>
+      </tr>
+      <tr>
+        <td>Rex <span class="arrow">→</span> Chief</td>
+        <td>Deliverable</td>
+        <td>
+          Paste-ready checklist: grid, gravity, fruit growth, exit, undo, and sim order
+          <strong>move → pushes → grow → gravity → hazards</strong>.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Devin</td>
+        <td>Lock spec</td>
+        <td>
+          Inject Rex’s checklist into the running Cloud Agent via interrupt reply; treat it as the locked v1 spec.
+        </td>
+      </tr>
+      <tr>
+        <td>Devin <span class="arrow">→</span> Chief</td>
+        <td>Ack</td>
+        <td>
+          Confirmed checklist landed in Cloud Agent <code>bc-…</code>. Spec locked.
+        </td>
+      </tr>
+      <tr>
+        <td>Devin <span class="arrow">→</span> Chief</td>
+        <td>Ship report</td>
+        <td>
+          <blockquote>
+            <p>Done — Origin URL <code>tmp-…</code>, product name Gravity Birds, how to play (Godot F5 / export + web server). Blockers: none at ship.</p>
+          </blockquote>
+        </td>
+      </tr>
+      <tr>
+        <td>You <span class="arrow">↔</span> Chief</td>
+        <td>Clarify + next ask</td>
+        <td>
+          You were confused: Origin vs local Cursor. Chief explained the remote-vs-disk gap.
+          You asked for a clone to the laptop plus a GitHub re-home.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Devin</td>
+        <td>Re-home</td>
+        <td>
+          Clone Origin to the laptop Downloads path; create/push a GitHub repo
+          (try public; private OK if public create 403s).
+        </td>
+      </tr>
+      <tr>
+        <td>Devin <span class="arrow">→</span> Chief</td>
+        <td>Re-home result</td>
+        <td>
+          Local path ready; GitHub went private then public as <code>grokbot-gravity-bird</code>.
+          Origin git auth failed, so reconstruct/push GitHub then pull the laptop.
+          Web export binaries still missing.
+        </td>
+      </tr>
+      <tr>
+        <td>Devin <span class="arrow">→</span> Chief</td>
+        <td>Post-ship status</td>
+        <td>
+          Playtested; found Issues A (movement dead) and B (levels 2–5 unwinnable).
+          Opened Cloud Agents / PRs; later sent demystify notes
+          (symptom / cause / fix / verify) plus a remote SHA table including
+          <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>
+          then merge <code>c8881f5</code> / Origin <code>990a412</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Devin</td>
+        <td>Doc sync</td>
+        <td>
+          Push journey HTML updates to Origin while Chief pushes GitHub from the laptop.
+          Devin confirmed Origin SHAs afterward.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <p>
+      <strong>Takeaway:</strong> You talked to Chief. Chief woke Devin and Rex when needed.
+      Devin steered Cloud Agents. Replies bubbled back through Chief so you could see progress
+      without living inside every specialist tool call.
+    </p>
+  </div>
+</section>
+
 <section id="warts">
-  <h2>8. Post-ship gameplay fixes (warts)</h2>
+  <h2>9. Post-ship gameplay fixes (warts)</h2>
   <p>
     After the first shippable slice was re-homed and opened in Godot, Devin (Grok Bot / Development — again: <strong>not</strong> Cognition’s product)
     playtested on the shared computer and hit two hard blockers. Neither was invented for this writeup; both were fixed with Cursor Cloud Agents and PRs.
@@ -593,7 +782,7 @@
 </section>
 
 <section id="fix-commits">
-  <h2>9. Where the fix commits live</h2>
+  <h2>10. Where the fix commits live</h2>
   <p>Honest map of remotes after PR #2 landed on GitHub <code>main</code>:</p>
   <table>
     <thead>
@@ -634,7 +823,7 @@
 </section>
 
 <section id="rehome">
-  <h2>10. GitHub re-home + laptop pull</h2>
+  <h2>11. GitHub re-home + laptop pull</h2>
   <p>
     Where the playable tree lives after re-home (see also post-ship fixes above):
   </p>
@@ -664,7 +853,7 @@
 </section>
 
 <section id="play">
-  <h2>11. How to play now</h2>
+  <h2>12. How to play now</h2>
   <ol>
     <li>Install <strong>Godot 4.3+</strong> if you have not already.</li>
     <li>Import <code>project.godot</code> from <code class="redact">&lt;UserProfile&gt;\Downloads\gravity-birds</code>.</li>
@@ -682,7 +871,7 @@
 </section>
 
 <section id="gaps">
-  <h2>12. Open leftovers / honest gaps</h2>
+  <h2>13. Open leftovers / honest gaps</h2>
   <ul>
     <li><strong>Origin vs GitHub level bytes:</strong> GitHub <code>main</code> <code>c8881f5</code> (squash of
       <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>) and Origin <code>990a412</code> both fix levels 2–5,
@@ -698,7 +887,7 @@
 </section>
 
 <section id="glossary">
-  <h2>13. Glossary</h2>
+  <h2>14. Glossary</h2>
   <dl class="glossary">
     <dt>Origin</dt>
     <dd>
@@ -731,13 +920,19 @@
       Personal Access Token rejected by GitHub for an operation (here: public repo create), while another operation
       (private repo create) with the same token may still work. Symptom of scope or policy — not “GitHub is down.”
     </dd>
+    <dt>SendToAgent</dt>
+    <dd>
+      Asynchronous inter-bot messaging. One Grok Bot sends; the other gets a later turn.
+      <code>priority=true</code> wakes them now; <code>priority=false</code> is FYI for their next turn.
+    </dd>
   </dl>
 </section>
 
 <footer>
   <p>
     Self-contained demystification note for the Gravity Birds run.
-    Covers Origin birth, GitHub re-home, laptop Downloads clone, and post-ship movement + levels fixes
+    Covers Origin birth, GitHub re-home, laptop Downloads clone, inter-GrokBot messaging,
+    and post-ship movement + levels fixes
     (PR #2 squash-merged to GitHub <code>main</code> as <code>c8881f5</code>). No personal identifiers included by design.
   </p>
 </footer>
