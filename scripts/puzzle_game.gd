@@ -85,7 +85,7 @@ func execute_move(direction: Vector2i):
 	var head_pos = creature_segments[0]
 	var new_head_pos = head_pos + direction
 	
-	var new_segments = [new_head_pos]
+	var new_segments: Array[Vector2i] = [new_head_pos]
 	for i in range(creature_segments.size() - 1):
 		new_segments.append(creature_segments[i])
 	creature_segments = new_segments
@@ -202,8 +202,10 @@ func undo_move():
 	state_stack.pop_back()
 	var prev_state = state_stack[state_stack.size() - 1]
 	
-	creature_segments = prev_state["creature"].duplicate(true)
-	fruits_remaining = prev_state["fruits"].duplicate(true)
+	var restored_creature: Array = prev_state["creature"].duplicate(true)
+	creature_segments.assign(restored_creature)
+	var restored_fruits: Array = prev_state["fruits"].duplicate(true)
+	fruits_remaining.assign(restored_fruits)
 	
 	if hud:
 		hud.update_fruit_count(fruits_remaining.size())
@@ -218,8 +220,10 @@ func restart_level():
 	state_stack.clear()
 	state_stack.append(initial_state)
 	
-	creature_segments = initial_state["creature"].duplicate(true)
-	fruits_remaining = initial_state["fruits"].duplicate(true)
+	var restored_creature: Array = initial_state["creature"].duplicate(true)
+	creature_segments.assign(restored_creature)
+	var restored_fruits: Array = initial_state["fruits"].duplicate(true)
+	fruits_remaining.assign(restored_fruits)
 	is_won = false
 	is_dead = false
 	
