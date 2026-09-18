@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqv5bvp3kyw6t"]
+
+[ext_resource type="Script" path="res://scripts/puzzle_game.gd" id="1_puzzle_game"]
+[ext_resource type="PackedScene" uid="uid://bh5wxk8uhfxp6" path="res://scenes/hud.tscn" id="2_hud"]
+
+[node name="PuzzleGame" type="Node2D"]
+script = ExtResource("1_puzzle_game")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(320, 256)
+zoom = Vector2(1.5, 1.5)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
