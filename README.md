@@ -30,6 +30,18 @@ This Godot puzzle game was developed by the **Grok Bot team** - autonomous assis
 
 Also in-repo: [`gravity-birds-dev-journey.html`](./gravity-birds-dev-journey.html)
 
+
+## Art and UI polish (before / after)
+
+Request: polish art and UI on the current rules (Moss Ledger look), without changing gameplay.
+
+**Before** (procedural geometric placeholders):
+
+![Before polish](./game_ui_1.png)
+
+**After** (Moss Ledger art pack + HUD):
+
+![After polish](./game_ui_2.png)
 ## How to Play
 
 ### Controls
