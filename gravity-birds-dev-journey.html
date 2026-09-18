@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gravity Birds — Development Journey (demystified)</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg-elev: #1a222c;
+    --bg-callout: #243041;
+    --border: #2e3a48;
+    --text: #e7ecf1;
+    --muted: #9aa8b8;
+    --accent: #7ec8a3;
+    --accent-dim: #4a8f6f;
+    --warn: #e8b86d;
+    --warn-bg: #2a2418;
+    --danger: #e07a7a;
+    --link: #8ec8f0;
+    --mono: "JetBrains Mono", "SF Mono", "Consolas", "Liberation Mono", monospace;
+    --sans: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  header.hero {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+  header.hero .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 4vw, 2.35rem);
+    line-height: 1.2;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0;
+    max-width: 38rem;
+  }
+
+  nav.toc {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2.75rem;
+  }
+  nav.toc strong {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  nav.toc ol {
+    margin: 0;
+    padding-left: 1.25rem;
+    columns: 1;
+  }
+  nav.toc a {
+    color: var(--link);
+    text-decoration: none;
+  }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    margin: 2.75rem 0 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h2:first-of-type { border-top: none; }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.6rem;
+    color: var(--accent);
+  }
+
+  p { margin: 0.85rem 0; }
+  ul, ol { margin: 0.6rem 0 1rem; padding-left: 1.35rem; }
+  li { margin: 0.35rem 0; }
+  li::marker { color: var(--accent-dim); }
+
+  code, .path, .redact {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+  }
+  .redact {
+    color: var(--warn);
+    border-color: #5a4a2a;
+    background: var(--warn-bg);
+  }
+
+  a { color: var(--link); }
+
+  .callout {
+    background: var(--bg-callout);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.9rem 1.1rem;
+    margin: 1.25rem 0;
+  }
+  .callout.warn {
+    border-left-color: var(--warn);
+    background: var(--warn-bg);
+  }
+  .callout.big {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warn);
+    padding: 1.25rem 1.35rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .callout.big h2 {
+    border: none;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    color: var(--warn);
+    font-size: 1.35rem;
+  }
+  .callout p:first-child { margin-top: 0; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin: 1rem 0 1.5rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.65rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+    border-left: 2px solid var(--border);
+  }
+  .timeline li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 1.35rem;
+    margin: 0;
+  }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 1.05rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .timeline .step {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .roles {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0 1.25rem;
+  }
+  .role {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+  }
+  .role .name {
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .role .title {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .role.absent {
+    opacity: 0.75;
+    border-style: dashed;
+  }
+  .role.absent .name { color: var(--muted); }
+
+  dl.glossary {
+    margin: 1rem 0;
+  }
+  dl.glossary dt {
+    font-weight: 700;
+    margin-top: 1rem;
+    color: var(--accent);
+  }
+  dl.glossary dd {
+    margin: 0.35rem 0 0;
+    color: var(--text);
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media print {
+    :root {
+      --bg: #fff;
+      --bg-elev: #f4f6f8;
+      --bg-callout: #eef2f6;
+      --border: #ccd3db;
+      --text: #1a1f26;
+      --muted: #5a6570;
+      --accent: #1a6b4a;
+      --accent-dim: #2d7a5a;
+      --warn: #8a5a10;
+      --warn-bg: #faf3e6;
+      --link: #0b5cad;
+    }
+    body { background: #fff; color: #1a1f26; }
+    .wrap { max-width: 100%; }
+    nav.toc { break-inside: avoid; }
+    a { color: inherit; text-decoration: underline; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Grok Bot team · Cursor Cloud Agent · warts and all</p>
+  <h1>Gravity Birds — Development Journey (demystified)</h1>
+  <p class="lede">
+    Plain account of how an autonomous bot team plus a Cursor Cloud Agent produced a Snakebird-like Godot puzzle game,
+    where the files actually lived, and why “it’s in Cursor” did not mean “I can see it on This PC.”
+  </p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#asked">What you asked for</a></li>
+    <li><a href="#team">Who was on the Grok Bot team</a></li>
+    <li><a href="#cursor">Non-negotiable: must use Cursor</a></li>
+    <li><a href="#platform">Platform choice: Godot 4</a></li>
+    <li><a href="#cloud">Cursor Cloud Agent on Origin</a></li>
+    <li><a href="#unknowns">The confusion wall (unknown unknowns)</a></li>
+    <li><a href="#timeline">Timeline of autonomous steps</a></li>
+    <li><a href="#rehome">GitHub re-home + laptop pull</a></li>
+    <li><a href="#play">How to play now</a></li>
+    <li><a href="#gaps">Open leftovers / honest gaps</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<section id="asked">
+  <h2>1. What you asked for</h2>
+  <p>
+    You wanted an original puzzle game in the spirit of Snakebird: grid-based, multi-segment creature, gravity after moves,
+    fruit that grows the body, exit after collecting fruit, undo/restart — <em>inspired by</em>, not a clone of commercial IP.
+  </p>
+  <p>
+    Constraints that shaped the run:
+  </p>
+  <ul>
+    <li>Build it with Cursor in the loop (non-negotiable).</li>
+    <li>Prefer a real engine project you could open and play, not a throwaway web mock.</li>
+    <li>Keep it original: no Snakebird art, levels, characters, or trademarks.</li>
+  </ul>
+  <p>
+    The working title that landed was <strong>Gravity Birds</strong>. The Grok Bot team treated that as the product name;
+    the remote repo Cursor spun up did not use that name (more on that below).
+  </p>
+</section>
+
+<section id="team">
+  <h2>2. Who was on the Grok Bot team for this job</h2>
+  <p>
+    Only three specialists were in the loop. Others on the wider roster were idle for this ask.
+  </p>
+
+  <div class="roles">
+    <div class="role">
+      <div class="name">Chief</div>
+      <div class="title">Orchestrator</div>
+      <p>
+        Took the ask, confirmed platform with you, dispatched specialists, relayed specs between bots and the cloud agent,
+        and reported status back. Did not write Godot code.
+      </p>
+    </div>
+    <div class="role">
+      <div class="name">Devin (Development)</div>
+      <div class="title">Implementation owner</div>
+      <p>
+        Owned the Cursor Cloud Agent launch, Origin <code>new_repo</code> path, oversight of the Godot build,
+        and later the GitHub re-home plus clone onto the laptop under Projects.
+      </p>
+    </div>
+    <div class="role">
+      <div class="name">Rex (Research)</div>
+      <div class="title">Mechanics research</div>
+      <p>
+        Built a Snakebird-<em>inspired</em> mechanics checklist from public sources (design patterns only — no IP theft).
+        That checklist was injected into the cloud agent mid-run so simulation order and rules stayed coherent.
+      </p>
+    </div>
+    <div class="role absent">
+      <div class="name">Not involved</div>
+      <div class="title">Clear team map</div>
+      <p>
+        Frank, Stuart, Bess, and other roster bots were <strong>not</strong> on this job. If you only hear three names for Gravity Birds, that is intentional — not a missing handoff.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="cursor">
+  <h2>3. Non-negotiable: must use Cursor</h2>
+  <p>
+    The constraint was satisfied by launching a <strong>Cursor Cloud Agent</strong> against a new Origin repository.
+    That is a valid Cursor path. It is not the only one.
+  </p>
+  <div class="callout">
+    <p>
+      <strong>Also would have counted:</strong> creating a local folder, opening it in the local Cursor IDE, and building there.
+      “Must use Cursor” ≠ “must use Origin cloud agents.” The team picked the cloud path because it could scaffold a full Godot tree without Godot installed on your machine yet.
+    </p>
+  </div>
+</section>
+
+<section id="platform">
+  <h2>4. Platform choice: Godot 4</h2>
+  <p>
+    After a short platform check with you, the team settled on <strong>Godot 4</strong> (target <strong>4.3</strong>, GDScript).
+    Reasons that mattered in practice: free, open, good for 2D grid puzzles, easy to open later on a laptop, no Unity license dance.
+  </p>
+  <p>
+    Important context: <strong>you did not have Godot installed yet</strong> when the cloud agent ran.
+    So the first playable artifact lived in a remote repo and a remote agent workspace — not in a folder you could double-click.
+    Editor play (F5) only becomes real after install + clone + Import.
+  </p>
+</section>
+
+<section id="cloud">
+  <h2>5. Cursor Cloud Agent on Origin</h2>
+  <p>
+    Devin launched a Cloud Agent with <code>new_repo</code> (private Origin). Cursor auto-named the repo something like
+    <code>tmp-…</code> — <em>not</em> “Snakebird” and <em>not</em> “Gravity Birds.” That naming choice is a recurring source of “where did it go?”
+  </p>
+  <ul>
+    <li><strong>Engine:</strong> Godot 4.3 project (<code>project.godot</code>, scenes, scripts, level resources).</li>
+    <li><strong>Spec:</strong> Rex’s simulation-order checklist injected mid-build (move → push → grow → gravity → hazards).</li>
+    <li><strong>Content:</strong> five original levels, undo (Z), restart (R), menus / level select.</li>
+    <li><strong>Web:</strong> agent attempted HTML5/web export (folder can look “done” even when browser play is incomplete — see unknowns).</li>
+  </ul>
+  <p>
+    Agent sessions show up under URLs shaped like <code>cursor.com/agents/bc-…</code>.
+    The Origin codebase itself is a different surface (<code>cursor.com/codebase/…</code>). Neither magically appears as a row under local Cursor “home” until you clone.
+  </p>
+</section>
+
+<section id="unknowns">
+  <div class="callout big">
+    <h2>6. The confusion wall — UNKNOWN UNKNOWNS</h2>
+    <p>
+      This is the section that usually gets papered over in “we shipped a game” writeups.
+      Most of the frustration was not Godot — it was <em>where state lives</em> and what words like Cursor / Origin / Agents actually point at.
+    </p>
+  </div>
+
+  <h3>Origin repo ≠ folder on This PC</h3>
+  <p>
+    Cloud Agent writes into an Origin-hosted git remote and a remote workspace.
+    Your laptop’s disk is empty of that project until someone clones it.
+    Local Cursor’s home / recent list only shows <strong>local</strong> folders you have opened. No clone → nothing to list.
+  </p>
+
+  <h3>Auto-generated Origin name is easy to miss</h3>
+  <p>
+    Searching the UI or your memory for “Snakebird” or “Gravity Birds” will miss a repo named like <code>tmp-…</code>.
+    The product name and the remote name were never the same string.
+  </p>
+
+  <h3>No obvious “Agents” menu on the IDE home screen</h3>
+  <p>
+    If you open the desktop IDE and look for a big Agents tab on the welcome screen, you may not find one.
+    Practical paths: open <code>cursor.com/codebase</code> or the agent URL (<code>cursor.com/agents/bc-…</code>) in a browser while signed in.
+  </p>
+
+  <h3>Cloud Agent writes remotely; local IDE does not “see” Origin</h3>
+  <p>
+    There is no ambient sync that materializes Origin files into the IDE.
+    Clone (or download) is the bridge. Until then, local Cursor and Origin are strangers.
+  </p>
+
+  <h3>“Must use Cursor” ≠ “must use Origin cloud agent”</h3>
+  <p>
+    Alternative that also satisfied the constraint: empty folder under Projects → Open Folder in local Cursor → build there.
+    The team chose cloud for bootstrap speed without a local Godot install; that choice created the visibility gap.
+  </p>
+
+  <h3>Public GitHub create can 403 on a PAT while private create works</h3>
+  <p>
+    When re-homing off Origin, creating a <em>public</em> GitHub repo with a personal access token can fail with 403
+    even though creating a <em>private</em> repo with the same token succeeds. Scope / org policy / default visibility — whatever the root cause,
+    the workable path was <strong>private</strong> <code>gravity-birds</code>.
+  </p>
+
+  <h3>Origin git HTTPS may reject tokens until <code>origin auth login</code></h3>
+  <p>
+    Pushing or pulling Origin over HTTPS with a generic token can fail until Cursor’s Origin auth flow is happy
+    (<code>origin auth login</code> or equivalent). The practical workaround used here: reconstruct / push the tree to GitHub,
+    then clone GitHub onto the laptop. Origin remained the birthplace; GitHub became the laptop-friendly home.
+  </p>
+
+  <h3>Web export folder can exist without a playable wasm/pck</h3>
+  <p>
+    An <code>export/</code> tree (or partial export) can exist while the browser build is missing critical artifacts
+    (<code>.wasm</code>, <code>.pck</code>, etc.). Opening HTML then fails; <strong>Godot editor F5 still works</strong>.
+    Do not treat “export folder present” as “web build ships.”
+  </p>
+
+  <h3>Inspired-by ≠ clone</h3>
+  <p>
+    Rex’s checklist and the agent prompt both insisted: no commercial Snakebird assets, levels, characters, or trademarks.
+    Gravity Birds is an original grid-gravity snake-creature puzzle with its own name and levels.
+  </p>
+</section>
+
+<section id="timeline">
+  <h2>7. Timeline of autonomous steps</h2>
+  <p>Chronological, condensed — the path the bots actually took:</p>
+  <ol class="timeline">
+    <li>
+      <span class="step">Ask</span>
+      You requested a Snakebird-like puzzle; Chief clarified Cursor + engine constraints with you.
+    </li>
+    <li>
+      <span class="step">Platform</span>
+      Godot 4 chosen; noted you did not have Godot installed yet.
+    </li>
+    <li>
+      <span class="step">Research</span>
+      Rex produced a public-source mechanics checklist (simulation order, fruit, exit, hazards, undo) — original game only.
+    </li>
+    <li>
+      <span class="step">Launch</span>
+      Devin started Cursor Cloud Agent with Origin <code>new_repo</code> (private, auto-named <code>tmp-…</code>).
+    </li>
+    <li>
+      <span class="step">Inject</span>
+      Mechanics checklist injected into the running agent so early code would not drift from the v1 rules.
+    </li>
+    <li>
+      <span class="step">Build</span>
+      Agent implemented Godot 4.3 project: core loop, 5 levels, UI, undo/restart; attempted web export.
+    </li>
+    <li>
+      <span class="step">Visibility wall</span>
+      Local Cursor home showed nothing; Origin name ≠ product name; agent URL / codebase URL needed in a browser.
+    </li>
+    <li>
+      <span class="step">Re-home</span>
+      Push to private GitHub <code>&lt;github-user&gt;/gravity-birds</code> (private create succeeded where public 403’d).
+    </li>
+    <li>
+      <span class="step">Laptop</span>
+      Clone to <code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code>; open via File → Open Folder (Cursor and/or Godot Import).
+    </li>
+  </ol>
+</section>
+
+<section id="rehome">
+  <h2>8. GitHub re-home + laptop pull</h2>
+  <p>
+    End state for this journey (narrative stops here on purpose):
+  </p>
+  <table>
+    <thead>
+      <tr><th>Surface</th><th>Where</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Canonical laptop clone</td>
+        <td><code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code></td>
+      </tr>
+      <tr>
+        <td>GitHub remote</td>
+        <td>private <code>github.com/&lt;github-user&gt;/gravity-birds</code></td>
+      </tr>
+      <tr>
+        <td>Birth remote</td>
+        <td>Origin private <code>tmp-…</code> (optional to keep; not required to play)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    In Cursor: <strong>File → Open Folder</strong> on the Projects clone.
+    In Godot: Import → select <code>project.godot</code> in that same folder.
+  </p>
+</section>
+
+<section id="play">
+  <h2>9. How to play now</h2>
+  <ol>
+    <li>Install <strong>Godot 4.3+</strong> if you have not already.</li>
+    <li>Import <code>project.godot</code> from <code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code>.</li>
+    <li>Press <strong>F5</strong> (or the Play button) in the editor.</li>
+  </ol>
+  <h3>Controls</h3>
+  <ul>
+    <li><strong>WASD</strong> or arrow keys — move the creature’s head</li>
+    <li><strong>Z</strong> — undo</li>
+    <li><strong>R</strong> — restart level</li>
+  </ul>
+  <p>
+    Prefer editor play over the web export until you have verified a full HTML5 export (templates installed, <code>.wasm</code> / <code>.pck</code> present, served over <code>http://localhost</code>, not <code>file://</code>).
+  </p>
+</section>
+
+<section id="gaps">
+  <h2>10. Open leftovers / honest gaps</h2>
+  <ul>
+    <li><strong>Web export reliability:</strong> treat browser play as best-effort until you re-export from a local Godot with templates installed and confirm artifacts.</li>
+    <li><strong>Origin vs GitHub:</strong> two remotes may exist; day-to-day work should use the GitHub remote you can clone and push without Origin auth friction.</li>
+    <li><strong>Level depth:</strong> five levels is a vertical slice, not a commercial campaign. Difficulty / teaching curve can still be tuned by hand.</li>
+    <li><strong>Art:</strong> procedural / geometric placeholders — intentional originality, not final polish.</li>
+    <li><strong>No Godot on the cloud path for you:</strong> the agent could headless-tool on its machine; your playtest path was always “install Godot locally after clone.”</li>
+    <li><strong>Discovery UX:</strong> product name, Origin <code>tmp-…</code> name, and agent <code>bc-…</code> id are three different strings — bookmark the ones you care about.</li>
+  </ul>
+</section>
+
+<section id="glossary">
+  <h2>11. Glossary</h2>
+  <dl class="glossary">
+    <dt>Origin</dt>
+    <dd>
+      Cursor’s hosted git / codebase surface where Cloud Agents can <code>new_repo</code> and push.
+      Lives in the cloud; not a folder on This PC until cloned elsewhere.
+    </dd>
+    <dt>Cloud Agent</dt>
+    <dd>
+      A Cursor agent that runs remotely against a repo/workspace (URL pattern <code>cursor.com/agents/bc-…</code>).
+      Writes remotely; does not auto-mount into the local IDE.
+    </dd>
+    <dt>Grok Bot team</dt>
+    <dd>
+      The multi-bot roster (Chief orchestrating specialists like Devin and Rex). Bots share a box filesystem with each other;
+      they do not share your laptop desktop. For this job: Chief + Devin + Rex only.
+    </dd>
+    <dt>Local Cursor</dt>
+    <dd>
+      The desktop IDE on your machine. Home / recents list local projects you opened.
+      Opening a cloud-built game requires a local clone (or other download) first.
+    </dd>
+    <dt>PAT 403</dt>
+    <dd>
+      Personal Access Token rejected by GitHub for an operation (here: public repo create), while another operation
+      (private repo create) with the same token may still work. Symptom of scope or policy — not “GitHub is down.”
+    </dd>
+  </dl>
+</section>
+
+<footer>
+  <p>
+    Self-contained demystification note for the Gravity Birds run.
+    Narrative stops at the Projects clone and GitHub re-home — no later file moves.
+    No personal identifiers included by design.
+  </p>
+</footer>
+
+</div>
+</body>
+</html>
