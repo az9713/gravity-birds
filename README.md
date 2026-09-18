@@ -16,14 +16,14 @@ An original grid-based puzzle game inspired by gravity-and-snake mechanics. Guid
 
 **Grok Bot** built this.
 
-This Godot puzzle game was developed by the **Grok Bot team** — autonomous assistants in the Grok Bot app — using a **Cursor Cloud Agent** on **Cursor Origin**, then re-homed here on GitHub.
+This Godot puzzle game was developed by the **Grok Bot team** - autonomous assistants in the Grok Bot app - using a **Cursor Cloud Agent** on **Cursor Origin**, then re-homed here on GitHub.
 
 **Grok Bot is the star of the show.** Cursor was the coding workshop; Grok Bot ran the production: planning, specialist handoffs, Cloud Agent steering, and demystifying the path from Origin to your laptop.
 
 ### Cast
-- **Chief** (Grok Bot) — lead / orchestrator — the showrunner for this build
-- **Devin** (Grok Bot, Development) — launched and steered the Cursor Cloud Agent — *not* Cognition's Devin product
-- **Rex** (Grok Bot, Research) — Snakebird-inspired mechanics checklist (original game only)
+- **Chief** (Grok Bot) - lead / orchestrator - the showrunner for this build
+- **Devin** (Grok Bot, Development) - launched and steered the Cursor Cloud Agent - *not* Cognition's Devin product
+- **Rex** (Grok Bot, Research) - Snakebird-inspired mechanics checklist (original game only)
 
 **Live development journey (GitHub Pages):**  
 [https://az9713.github.io/grokbot-gravity-bird/gravity-birds-dev-journey.html](https://az9713.github.io/grokbot-gravity-bird/gravity-birds-dev-journey.html)
