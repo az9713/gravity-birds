@@ -301,6 +301,8 @@
     <li><a href="#cloud">Cursor Cloud Agent on Origin</a></li>
     <li><a href="#unknowns">The confusion wall (unknown unknowns)</a></li>
     <li><a href="#timeline">Timeline of autonomous steps</a></li>
+    <li><a href="#warts">Post-ship gameplay fixes (warts)</a></li>
+    <li><a href="#fix-commits">Where the fix commits live</a></li>
     <li><a href="#rehome">GitHub re-home + laptop pull</a></li>
     <li><a href="#play">How to play now</a></li>
     <li><a href="#gaps">Open leftovers / honest gaps</a></li>
@@ -357,7 +359,7 @@
         <strong>Not</strong> Cognition’s “Devin” product. This Devin is a <strong>Grok Bot</strong> teammate
         (sidebar label Development) on the same Grok Bot roster as Chief and Rex.
         Owned the Cursor Cloud Agent launch, Origin <code>new_repo</code> path, oversight of the Godot build,
-        and later the GitHub re-home plus clone onto the laptop under Projects.
+        and later the GitHub re-home plus clone onto the laptop under Downloads.
       </p>
     </div>
     <div class="role">
@@ -525,19 +527,116 @@
     </li>
     <li>
       <span class="step">Re-home</span>
-      Push to private GitHub <code>&lt;github-user&gt;/gravity-birds</code> (private create succeeded where public 403’d).
+      Push / re-home toward GitHub <code>az9713/grokbot-gravity-bird</code> (earlier private-create path succeeded where public 403’d; public name above is the playable home).
     </li>
     <li>
       <span class="step">Laptop</span>
-      Clone to <code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code>; open via File → Open Folder (Cursor and/or Godot Import).
+      Clone to <code class="redact">&lt;UserProfile&gt;\Downloads\gravity-birds</code>; open via File → Open Folder (Cursor and/or Godot Import).
+    </li>
+    <li>
+      <span class="step">Playtest</span>
+      Devin (Grok Bot / Development — <strong>not</strong> Cognition) playtested on the shared computer, opened First Steps, and found two ship-blocking bugs: movement dead, and levels 2–5 unwinnable.
+    </li>
+    <li>
+      <span class="step">Movement fix</span>
+      Typed-array bug in <code>scripts/puzzle_game.gd</code> fixed via Cursor Cloud Agent; squash-merged to GitHub <code>az9713/grokbot-gravity-bird</code> as PR #1 (<code>main</code> ~ <code>ae68b46</code>); also landed on Origin as <code>38d83fa</code>.
+    </li>
+    <li>
+      <span class="step">Levels fix</span>
+      Levels 2–5 redesigned (heads on EMPTY, BFS-validated) via a second Cloud Agent + GitHub <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a> (merged; squash commit <code>c8881f5</code> on GitHub <code>main</code>); levels synced to Origin <code>main</code> as <code>990a412</code>; level files copied to the laptop Downloads clone.
     </li>
   </ol>
 </section>
 
-<section id="rehome">
-  <h2>8. GitHub re-home + laptop pull</h2>
+<section id="warts">
+  <h2>8. Post-ship gameplay fixes (warts)</h2>
   <p>
-    End state for this journey (narrative stops here on purpose):
+    After the first shippable slice was re-homed and opened in Godot, Devin (Grok Bot / Development — again: <strong>not</strong> Cognition’s product)
+    playtested on the shared computer and hit two hard blockers. Neither was invented for this writeup; both were fixed with Cursor Cloud Agents and PRs.
+  </p>
+
+  <h3>Issue A — Movement dead</h3>
+  <ul>
+    <li><strong>Symptom:</strong> First Steps opened; arrow keys / WASD did nothing. Undo / Restart UI was still visible.</li>
+    <li><strong>Cause:</strong> Godot 4 typed arrays. <code>execute_move()</code> built an untyped <code>Array</code>, then assigned it into
+      <code>creature_segments: Array[Vector2i]</code> → runtime error, move aborted. The same class of risk existed on undo/restart restores.</li>
+    <li><strong>Fix:</strong> Typed <code>Array[Vector2i]</code> construction / <code>.assign()</code> in <code>scripts/puzzle_game.gd</code>.</li>
+    <li><strong>Verify:</strong> F5 → Play → First Steps → click the playfield → Right / D moves the bird.</li>
+  </ul>
+  <div class="callout">
+    <p>
+      <strong>Not Issue A:</strong> Up / Down blocked at the First Steps start is intentional (neck / floor). Only left–right deadness was the bug.
+    </p>
+  </div>
+
+  <h3>Issue B — Levels 2–5 unwinnable</h3>
+  <ul>
+    <li><strong>Symptom:</strong> Only First Steps felt playable. Gap / Stairway / Danger Zone / The Puzzle looked stuck — zero useful moves.</li>
+    <li><strong>Cause:</strong> Level data. Heads spawned <em>on SOLID tiles</em> in <code>level_02</code>..<code>level_05.tres</code>; every attempted move was neck reverse or wall.
+      Level 01 was fine (head on EMPTY).</li>
+    <li><strong>Fix:</strong> Redesigned <code>level_02</code>–<code>05</code> so heads sit on EMPTY; themes kept. BFS-validated against engine order
+      <strong>move → fruit → gravity → grow → hazards</strong>.</li>
+  </ul>
+  <p>Example solutions (layouts matching the GitHub PR):</p>
+  <table>
+    <thead>
+      <tr><th>Level</th><th>Solution (U/D/L/R)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>L1 First Steps</td><td><code>RRRURRR</code></td></tr>
+      <tr><td>L2 Gap</td><td><code>RRURRURRR</code></td></tr>
+      <tr><td>L3 Stairway</td><td><code>LURURRURRURRURR</code></td></tr>
+      <tr><td>L4 Danger Zone</td><td><code>RRUURRRURLURR</code></td></tr>
+      <tr><td>L5 The Puzzle</td><td><code>RRURRRURRRRR</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="fix-commits">
+  <h2>9. Where the fix commits live</h2>
+  <p>Honest map of remotes after PR #2 landed on GitHub <code>main</code>:</p>
+  <table>
+    <thead>
+      <tr><th>Remote</th><th>What</th><th>Ref</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GitHub <code>az9713/grokbot-gravity-bird</code></td>
+        <td>Movement fix merged (squash PR #1)</td>
+        <td><code>main</code> ~ <code>ae68b46</code></td>
+      </tr>
+      <tr>
+        <td>GitHub</td>
+        <td>Levels 2–5 redesign</td>
+        <td>Squash-merged PR #2 → <code>main</code> <code>c8881f5</code>
+          (<a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>)</td>
+      </tr>
+      <tr>
+        <td>Origin <code>az9713/tmp-98639729b424a5bb</code></td>
+        <td>Movement fix</td>
+        <td><code>38d83fa</code></td>
+      </tr>
+      <tr>
+        <td>Origin</td>
+        <td>Levels 2–5 sync</td>
+        <td><code>990a412</code> on <code>main</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <p>
+      <strong>Wart:</strong> Origin levels bytes may differ slightly from the GitHub PR #2 layouts (Cloud Agent recreated both).
+      Both aim for empty-head + solvable. The laptop
+      <code class="redact">&lt;UserProfile&gt;\Downloads\gravity-birds</code> clone has the movement patch plus PR-branch levels —
+      after the merge, the laptop clone was fast-forwarded to GitHub <code>main</code> <code>c8881f5</code>.
+    </p>
+  </div>
+</section>
+
+<section id="rehome">
+  <h2>10. GitHub re-home + laptop pull</h2>
+  <p>
+    Where the playable tree lives after re-home (see also post-ship fixes above):
   </p>
   <table>
     <thead>
@@ -546,29 +645,29 @@
     <tbody>
       <tr>
         <td>Canonical laptop clone</td>
-        <td><code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code></td>
+        <td><code class="redact">&lt;UserProfile&gt;\Downloads\gravity-birds</code></td>
       </tr>
       <tr>
         <td>GitHub remote</td>
-        <td>private <code>github.com/&lt;github-user&gt;/gravity-birds</code></td>
+        <td><code>github.com/az9713/grokbot-gravity-bird</code> (public repo name; playable home)</td>
       </tr>
       <tr>
         <td>Birth remote</td>
-        <td>Origin private <code>tmp-…</code> (optional to keep; not required to play)</td>
+        <td>Origin <code>az9713/tmp-98639729b424a5bb</code> (optional to keep; not required to play)</td>
       </tr>
     </tbody>
   </table>
   <p>
-    In Cursor: <strong>File → Open Folder</strong> on the Projects clone.
+    In Cursor: <strong>File → Open Folder</strong> on the Downloads clone.
     In Godot: Import → select <code>project.godot</code> in that same folder.
   </p>
 </section>
 
 <section id="play">
-  <h2>9. How to play now</h2>
+  <h2>11. How to play now</h2>
   <ol>
     <li>Install <strong>Godot 4.3+</strong> if you have not already.</li>
-    <li>Import <code>project.godot</code> from <code class="redact">&lt;UserProfile&gt;\Projects\gravity-birds</code>.</li>
+    <li>Import <code>project.godot</code> from <code class="redact">&lt;UserProfile&gt;\Downloads\gravity-birds</code>.</li>
     <li>Press <strong>F5</strong> (or the Play button) in the editor.</li>
   </ol>
   <h3>Controls</h3>
@@ -583,10 +682,14 @@
 </section>
 
 <section id="gaps">
-  <h2>10. Open leftovers / honest gaps</h2>
+  <h2>12. Open leftovers / honest gaps</h2>
   <ul>
-    <li><strong>Web export reliability:</strong> treat browser play as best-effort until you re-export from a local Godot with templates installed and confirm artifacts.</li>
-    <li><strong>Origin vs GitHub:</strong> two remotes may exist; day-to-day work should use the GitHub remote you can clone and push without Origin auth friction.</li>
+    <li><strong>Origin vs GitHub level bytes:</strong> GitHub <code>main</code> <code>c8881f5</code> (squash of
+      <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>) and Origin <code>990a412</code> both fix levels 2–5,
+      but layouts may differ slightly — cite the remote you are playing from.</li>
+    <li><strong>No real HTML5 export artifacts:</strong> treat browser play as incomplete until you re-export from a local Godot with templates installed and confirm <code>.wasm</code> / <code>.pck</code>.</li>
+    <li><strong>Gravity quirk (v1 engine):</strong> gravity is per-segment fall, not a rigid Snakebird-shaped body. Intentional-for-now engine quirk, not Issue A/B.</li>
+    <li><strong>Origin vs GitHub:</strong> two remotes exist (<code>az9713/tmp-98639729b424a5bb</code> and <code>az9713/grokbot-gravity-bird</code>); day-to-day work should use the GitHub remote you can clone and push without Origin auth friction — GitHub <code>main</code> now includes the levels squash <code>c8881f5</code>.</li>
     <li><strong>Level depth:</strong> five levels is a vertical slice, not a commercial campaign. Difficulty / teaching curve can still be tuned by hand.</li>
     <li><strong>Art:</strong> procedural / geometric placeholders — intentional originality, not final polish.</li>
     <li><strong>No Godot on the cloud path for you:</strong> the agent could headless-tool on its machine; your playtest path was always “install Godot locally after clone.”</li>
@@ -595,7 +698,7 @@
 </section>
 
 <section id="glossary">
-  <h2>11. Glossary</h2>
+  <h2>13. Glossary</h2>
   <dl class="glossary">
     <dt>Origin</dt>
     <dd>
@@ -634,8 +737,8 @@
 <footer>
   <p>
     Self-contained demystification note for the Gravity Birds run.
-    Narrative stops at the Projects clone and GitHub re-home — no later file moves.
-    No personal identifiers included by design.
+    Covers Origin birth, GitHub re-home, laptop Downloads clone, and post-ship movement + levels fixes
+    (PR #2 squash-merged to GitHub <code>main</code> as <code>c8881f5</code>). No personal identifiers included by design.
   </p>
 </footer>
 
