@@ -12,6 +12,19 @@ An original grid-based puzzle game inspired by gravity-and-snake mechanics. Guid
 
 **This is an original game with unique art, levels, and design - not affiliated with or derived from any existing puzzle game IP.**
 
+## Built by
+
+**Grok Bot team** using a **Cursor Cloud Agent** on **Cursor Origin** (then re-homed to this GitHub repo).
+
+- **Chief** (Grok Bot) — orchestrated the ask and specialists
+- **Devin** (Grok Bot, Development) — launched and steered the Cursor Cloud Agent — *not* Cognition's Devin product
+- **Rex** (Grok Bot, Research) — Snakebird-inspired mechanics checklist (original game only)
+
+**Live development journey (GitHub Pages):**  
+[https://az9713.github.io/gravity-birds/gravity-birds-dev-journey.html](https://az9713.github.io/gravity-birds/gravity-birds-dev-journey.html)
+
+Also in-repo: [`gravity-birds-dev-journey.html`](./gravity-birds-dev-journey.html)
+
 ## How to Play
 
 ### Controls
