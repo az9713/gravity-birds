@@ -7,6 +7,17 @@ const FALL_DELAY = 0.08
 
 enum TileType { EMPTY = 0, SOLID = 1, VOID = 2, SPIKE = 3 }
 
+const TEX_SOLID := preload("res://assets/art/tile_solid.png")
+const TEX_EMPTY := preload("res://assets/art/tile_empty.png")
+const TEX_VOID := preload("res://assets/art/tile_void.png")
+const TEX_SPIKE := preload("res://assets/art/tile_spike.png")
+const TEX_FRUIT := preload("res://assets/art/fruit.png")
+const TEX_EXIT_LOCKED := preload("res://assets/art/exit_locked.png")
+const TEX_EXIT_OPEN := preload("res://assets/art/exit_open.png")
+const TEX_BIRD_HEAD := preload("res://assets/art/bird_head.png")
+const TEX_BIRD_BODY := preload("res://assets/art/bird_body.png")
+const TEX_BIRD_TAIL := preload("res://assets/art/bird_tail.png")
+
 var level_data: LevelData
 var creature_segments: Array[Vector2i] = []
 var fruits_remaining: Array[Vector2i] = []
@@ -244,31 +255,23 @@ func _draw():
 			
 			match tile:
 				TileType.SOLID:
-					draw_rect(Rect2(pos, Vector2(TILE_SIZE, TILE_SIZE)), Color(0.3, 0.3, 0.35))
-					draw_rect(Rect2(pos, Vector2(TILE_SIZE, TILE_SIZE)), Color(0.2, 0.2, 0.25), false, 2)
+					draw_texture(TEX_SOLID, pos)
+				TileType.VOID:
+					draw_texture(TEX_VOID, pos)
 				TileType.SPIKE:
-					draw_rect(Rect2(pos, Vector2(TILE_SIZE, TILE_SIZE)), Color(0.15, 0.15, 0.2))
-					# Draw triangle spikes
-					for i in range(3):
-						var spike_x = pos.x + i * (TILE_SIZE / 3) + TILE_SIZE / 6
-						var points = PackedVector2Array([
-							Vector2(spike_x - 8, pos.y + TILE_SIZE),
-							Vector2(spike_x, pos.y + TILE_SIZE - 16),
-							Vector2(spike_x + 8, pos.y + TILE_SIZE)
-						])
-						draw_colored_polygon(points, Color(0.7, 0.2, 0.2))
+					draw_texture(TEX_SPIKE, pos)
+				TileType.EMPTY:
+					pass
 	
 	# Draw exit
 	var exit_draw_pos = Vector2(exit_pos.x * TILE_SIZE, exit_pos.y * TILE_SIZE)
-	var exit_color = Color(0.2, 0.8, 0.3) if fruits_remaining.is_empty() else Color(0.4, 0.4, 0.4)
-	draw_rect(Rect2(exit_draw_pos + Vector2(8, 8), Vector2(TILE_SIZE - 16, TILE_SIZE - 16)), exit_color)
-	draw_rect(Rect2(exit_draw_pos + Vector2(8, 8), Vector2(TILE_SIZE - 16, TILE_SIZE - 16)), exit_color.darkened(0.3), false, 3)
+	var exit_tex = TEX_EXIT_OPEN if fruits_remaining.is_empty() else TEX_EXIT_LOCKED
+	draw_texture(exit_tex, exit_draw_pos)
 	
 	# Draw fruits
 	for fruit_pos in fruits_remaining:
 		var draw_pos = Vector2(fruit_pos.x * TILE_SIZE, fruit_pos.y * TILE_SIZE)
-		draw_circle(draw_pos + Vector2(TILE_SIZE / 2, TILE_SIZE / 2), 16, Color(0.9, 0.5, 0.1))
-		draw_circle(draw_pos + Vector2(TILE_SIZE / 2, TILE_SIZE / 2), 16, Color(0.7, 0.3, 0.0), false, 2)
+		draw_texture(TEX_FRUIT, draw_pos)
 	
 	# Draw creature
 	for i in range(creature_segments.size()):
@@ -276,12 +279,26 @@ func _draw():
 		var draw_pos = Vector2(seg.x * TILE_SIZE, seg.y * TILE_SIZE)
 		
 		var is_head = (i == 0)
-		var color = Color(0.3, 0.6, 0.9) if is_head else Color(0.4, 0.7, 0.95)
+		var is_tail = (i == creature_segments.size() - 1)
 		
-		draw_rect(Rect2(draw_pos + Vector2(4, 4), Vector2(TILE_SIZE - 8, TILE_SIZE - 8)), color, true, -1, true)
-		draw_rect(Rect2(draw_pos + Vector2(4, 4), Vector2(TILE_SIZE - 8, TILE_SIZE - 8)), color.darkened(0.3), false, 3)
-		
-		# Draw eye dots for head
+		var texture: Texture2D
 		if is_head:
-			draw_circle(draw_pos + Vector2(24, 24), 4, Color.BLACK)
-			draw_circle(draw_pos + Vector2(40, 24), 4, Color.BLACK)
+			texture = TEX_BIRD_HEAD
+		elif is_tail and creature_segments.size() > 1:
+			texture = TEX_BIRD_TAIL
+		else:
+			texture = TEX_BIRD_BODY
+		
+		# Determine facing direction (check if moving left)
+		var flip_h = false
+		if is_head and creature_segments.size() > 1:
+			var neck_pos = creature_segments[1]
+			if seg.x < neck_pos.x:
+				flip_h = true
+		
+		if flip_h:
+			draw_set_transform(draw_pos + Vector2(TILE_SIZE, 0), 0, Vector2(-1, 1))
+			draw_texture(texture, Vector2.ZERO)
+			draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
+		else:
+			draw_texture(texture, draw_pos)
