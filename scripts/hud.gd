@@ -1,10 +1,11 @@
 extends CanvasLayer
 
-@onready var level_name_label = $MarginContainer/VBoxContainer/TopBar/LevelName
-@onready var fruit_count_label = $MarginContainer/VBoxContainer/TopBar/FruitCount
-@onready var undo_button = $MarginContainer/VBoxContainer/BottomBar/UndoButton
-@onready var restart_button = $MarginContainer/VBoxContainer/BottomBar/RestartButton
-@onready var menu_button = $MarginContainer/VBoxContainer/BottomBar/MenuButton
+@onready var level_name_label = $TopPanel/MarginContainer/HBoxContainer/LevelName
+@onready var fruit_icon = $TopPanel/MarginContainer/HBoxContainer/FruitCounter/FruitIcon
+@onready var fruit_count_label = $TopPanel/MarginContainer/HBoxContainer/FruitCounter/FruitLabel
+@onready var undo_button = $ButtonContainer/UndoButton
+@onready var restart_button = $ButtonContainer/RestartButton
+@onready var menu_button = $ButtonContainer/MenuButton
 
 signal undo_pressed
 signal restart_pressed
@@ -19,7 +20,7 @@ func set_level_name(name: String):
 	level_name_label.text = name
 
 func update_fruit_count(count: int):
-	fruit_count_label.text = "Fruit: %d" % count
+	fruit_count_label.text = "%d" % count
 
 func _on_undo_pressed():
 	undo_pressed.emit()
