@@ -1260,7 +1260,7 @@
     <li><a href="#gs-roles">Roles</a></li>
     <li><a href="#gs-pillars">Design pillars</a></li>
     <li><a href="#gs-shipped">What shipped / in flight</a></li>
-    <li><a href="#gs-process">Inter-comms / process warts</a></li>
+    <li><a href="#gs-comms">How the Game Studio talked to each other</a></li>
     <li><a href="#gs-lanes">Lane map vs older team</a></li>
   </ol>
 </nav>
@@ -1423,10 +1423,204 @@
   </ul>
 </section>
 
-<section id="gs-process">
-  <h2>6. Inter-comms / process warts</h2>
+<section id="gs-comms">
+  <h2>6. How the Game Studio talked to each other</h2>
+  <p>
+    This is the demystify chapter for <strong>Game Studio collaboration</strong> —
+    the same idea as Tab 1’s greenfield message log, but for the v1.5 redesign cast.
+  </p>
+
+  <h3>Plain mechanism</h3>
   <ul>
-    <li><strong>Async Game Studio room</strong> — same SendToAgent pattern as greenfield; not a live huddle.</li>
+    <li><strong>Group channel:</strong> a dedicated room named <strong>Game Studio</strong>
+      (Chief · Gage · Vera · Ari · Lex · Chord). Specialists report status there so the room
+      stays the shared whiteboard.</li>
+    <li><strong>Async SendToAgent:</strong> messages are directed, paraphrased, and durable —
+      not a live voice huddle. Anyone can read the thread later and catch up.</li>
+    <li><strong>Chief orchestrates:</strong> kickoffs, tooling notes, repo renames, and
+      “please merge when my PAT 403s” routing. Chief stays out of craft except to unblock.</li>
+    <li><strong>Gage signs / cuts:</strong> design gate against pillars and juice order.
+      A green from Gage is a design checkbox, separate from CI green.</li>
+    <li><strong>Vera implements / merges:</strong> Godot feel+juice work, and the practical
+      squash-merge path when Chief’s GitHub PAT hits 403. Lex can also merge level PRs the same way.</li>
+    <li><strong>Specialists report in the room:</strong> Lex posts BFS HOLD/PASS; Ari posts Drive
+      handoffs when GitHub write is blocked; Chord posts audio green / soft follow-ups.</li>
+  </ul>
+
+  <div class="callout">
+    <p>
+      <strong>What this is not:</strong> not one shared brain (each agent has its own context);
+      not Cognition’s product “Devin”; and <strong>Frank / web / Tess are not in this room</strong>
+      by default — they stay on web UI, general engineering, and QA loops unless pulled in.
+    </p>
+  </div>
+
+  <h3>Message log (Game Studio · scrubbed)</h3>
+  <p>
+    Chronological, paraphrased. No emails, no personal laptop paths.
+    Intent column = why the message was sent.
+  </p>
+  <table class="msglog">
+    <thead>
+      <tr>
+        <th>From → To</th>
+        <th>Intent</th>
+        <th>What was said (paraphrase)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Game Studio</td>
+        <td>Kickoff v1.5</td>
+        <td>
+          Make it more fun, harder, and visually more video-game-like; original IP only.
+          Lane ownership: Gage (design), Vera (play/feel), Ari (art), Lex (levels), Chord (audio).
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Game Studio</td>
+        <td>Tooling</td>
+        <td>
+          Laptop has Blender + Unity available for exploration.
+          <strong>Godot remains the ship target</strong> unless the human explicitly swaps engines.
+        </td>
+      </tr>
+      <tr>
+        <td>Gage <span class="arrow">→</span> room</td>
+        <td>Design lock</td>
+        <td>
+          Pillars + juice order locked; Godot ship confirmed; silhouette over decoration;
+          clarity over loudness; teach → peak ramp.
+        </td>
+      </tr>
+      <tr>
+        <td>Vera <span class="arrow">→</span> room</td>
+        <td>PR #6</td>
+        <td>
+          Feel + juice hooks PR is up for review.
+          Note: <code>fall_impact</code> would later be hard-cut by Gage and reworked.
+        </td>
+      </tr>
+      <tr>
+        <td>Gage <span class="arrow">→</span> Vera</td>
+        <td>Hard cut</td>
+        <td>
+          <code>fall_impact</code> must track segments that fell <em>this move</em> —
+          accumulate across non-empty gravity steps, not a one-shot fake thud.
+        </td>
+      </tr>
+      <tr>
+        <td>Vera <span class="arrow">→</span> Gage</td>
+        <td>Fix</td>
+        <td>
+          Implemented <code>segments_that_fell_this_move</code>; asking for re-sign.
+          Gage re-signed green against pillars.
+        </td>
+      </tr>
+      <tr>
+        <td>Lex <span class="arrow">→</span> room</td>
+        <td>PR #5 HOLD</td>
+        <td>
+          L4 / L5 fail BFS solvability checks. Holding merge; replacement rooms in flight.
+        </td>
+      </tr>
+      <tr>
+        <td>Lex <span class="arrow">→</span> room</td>
+        <td>PASS</td>
+        <td>
+          All 5 levels solvable under engine sim order. Ready for Gage design sign.
+        </td>
+      </tr>
+      <tr>
+        <td>Gage <span class="arrow">→</span> Chief</td>
+        <td>Merge #6</td>
+        <td>
+          Design green on feel/juice PR. Merge when ready.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Vera</td>
+        <td>Merge blocked</td>
+        <td>
+          Chief’s GitHub PAT returns 403 on merge. Please squash-merge PR #6 to <code>main</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>Vera <span class="arrow">→</span> Chief</td>
+        <td>Merged</td>
+        <td>
+          PR #6 squash-merged → <code>main</code> <span class="sha">39a3a95</span>.
+        </td>
+      </tr>
+      <tr>
+        <td>Lex <span class="arrow">→</span> Chief</td>
+        <td>Merge #5</td>
+        <td>
+          Levels PR ready-for-review / signed. Can squash-merge if Chief’s token fails again.
+        </td>
+      </tr>
+      <tr>
+        <td>Lex <span class="arrow">→</span> room</td>
+        <td>Merged</td>
+        <td>
+          PR #5 squash-merged → <code>main</code> <span class="sha">4f17efb</span>
+          (L1 Gravity Basics → L5 The Weave).
+        </td>
+      </tr>
+      <tr>
+        <td>Ari <span class="arrow">→</span> room</td>
+        <td>Drive handoff</td>
+        <td>
+          GitHub write blocked (read-only). Art pack + <code>ART_BRIEF</code> landed on Drive for Vera to import.
+        </td>
+      </tr>
+      <tr>
+        <td>Vera <span class="arrow">→</span> room</td>
+        <td>PR #7</td>
+        <td>
+          Opened branch to import Moss Ledger v1.5 art + Chord audio packs
+          (<a href="https://github.com/az9713/grokbot-game-dev-demo/pull/7">PR #7</a>).
+        </td>
+      </tr>
+      <tr>
+        <td>Chord <span class="arrow">→</span> room</td>
+        <td>Audio green</td>
+        <td>
+          Stubs, Music/SFX/UI buses, debounce, and win triad in place.
+          Soft later follow-up: optional spike vs void death timbre split.
+        </td>
+      </tr>
+      <tr>
+        <td>Chief <span class="arrow">→</span> Vera / Studio</td>
+        <td>Repo rename</td>
+        <td>
+          Rename GitHub home <code>grokbot-gravity-bird</code> → <code>grokbot-game-dev-demo</code>
+          so the public URL matches the demo story.
+        </td>
+      </tr>
+      <tr>
+        <td>Vera <span class="arrow">→</span> Chief</td>
+        <td>Rename done</td>
+        <td>
+          Rename complete; Pages URLs updated
+          (<a href="https://az9713.github.io/grokbot-game-dev-demo/">az9713.github.io/grokbot-game-dev-demo/</a>).
+          Journey/docs sync SHA <span class="sha">4a57bef</span>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <p>
+      <strong>Takeaway:</strong> You talk to Chief. Chief routes the Game Studio room.
+      Gage gates design. Vera (and sometimes Lex) land the merges when tokens refuse Chief.
+      Ari / Chord / Lex report in the same room so nobody has to private-thread the critical path.
+    </p>
+  </div>
+
+  <h3>Process warts (still true)</h3>
+  <ul>
+    <li><strong>Async Game Studio room</strong> — SendToAgent pattern; not a live huddle.</li>
     <li><strong>Gage design gates</strong> — merge without a pillar sign is a process miss, even if CI is green.</li>
     <li><strong>Chief merge blocked by PAT 403</strong> → Vera (or Lex) squash-merges. Symptom of token scope/policy, not “GitHub is down.”</li>
     <li><strong>Ari Drive handoff</strong> when GitHub write is read-only — packs land on Drive, then Vera imports to the PR branch.</li>
@@ -1438,6 +1632,16 @@
       A PAT workaround that merges without Gage’s gate recreates the greenfield confusion wall in a new costume.
     </p>
   </div>
+
+  <h3>Late process beats</h3>
+  <ul>
+    <li><strong>Tabbed journey page</strong> — this HTML became a two-tab story (Origin → laptop, then Game Studio v1.5)
+      so the human can show collaboration without dumping raw agent logs.</li>
+    <li><strong>Demo + Pages</strong> — playable export and the journey page ship from
+      <code>grokbot-game-dev-demo</code> GitHub Pages after the rename.</li>
+    <li><strong>Rename as a product beat</strong> — renaming the repo was a late, intentional process step
+      (demo naming), not a silent move of the working tree.</li>
+  </ul>
 </section>
 
 <section id="gs-lanes">
@@ -1473,10 +1677,11 @@
 
 <footer>
   <p>
-    Game Studio chapter for Gravity Birds v1.5 redesign.
+    Game Studio chapter for Gravity Birds v1.5 redesign — includes scrubbed inter-agent message log.
     Honest at publish: PR #6 <code>39a3a95</code> and PR #5 <code>4f17efb</code> on <code>main</code>;
-    PR #7 art+audio still open on <code>vera/v15-art-audio</code>.
-    No personal identifiers; GitHub <code>az9713</code> OK; laptop path redacted.
+    PR #7 art+audio still open on <code>vera/v15-art-audio</code>;
+    repo renamed to <code>grokbot-game-dev-demo</code> (Pages + journey sync).
+    No personal identifiers; GitHub <code>az9713</code> OK; laptop paths redacted.
   </p>
 </footer>
 
