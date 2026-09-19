@@ -11,3 +11,25 @@ position = Vector2(320, 256)
 zoom = Vector2(1.5, 1.5)
 
 [node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="AudioPlayers" type="Node" parent="."]
+
+[node name="SfxMoveSettle" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxFallImpact" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxFruitCollect" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxGrow" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxExitUnlock" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxDeath" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxUndoRestore" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxWin" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxUiUndo" type="AudioStreamPlayer" parent="AudioPlayers"]
+
+[node name="SfxUiRestart" type="AudioStreamPlayer" parent="AudioPlayers"]

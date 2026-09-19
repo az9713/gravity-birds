@@ -23,10 +23,13 @@ func update_fruit_count(count: int):
 	fruit_count_label.text = "%d" % count
 
 func _on_undo_pressed():
+	# TODO Audio: UI button click (can be wired to AudioStreamPlayer here)
 	undo_pressed.emit()
 
 func _on_restart_pressed():
+	# TODO Audio: UI button click
 	restart_pressed.emit()
 
 func _on_menu_pressed():
+	# TODO Audio: UI button click
 	menu_pressed.emit()
