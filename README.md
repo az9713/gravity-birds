@@ -26,7 +26,7 @@ This Godot puzzle game was developed by the **Grok Bot team** - autonomous assis
 - **Rex** (Grok Bot, Research) - Snakebird-inspired mechanics checklist (original game only)
 
 **Live development journey (GitHub Pages):**  
-[https://az9713.github.io/grokbot-gravity-bird/gravity-birds-dev-journey.html](https://az9713.github.io/grokbot-gravity-bird/gravity-birds-dev-journey.html)
+[https://az9713.github.io/grokbot-game-dev-demo/gravity-birds-dev-journey.html](https://az9713.github.io/grokbot-game-dev-demo/gravity-birds-dev-journey.html)
 
 Also in-repo: [`gravity-birds-dev-journey.html`](./gravity-birds-dev-journey.html)
 
@@ -45,7 +45,7 @@ Request: polish art and UI on the current rules (Moss Ledger look), without chan
 
 ## Play the demo
 
-Watch a short capture on GitHub Pages: [demo.html](https://az9713.github.io/grokbot-gravity-bird/demo.html) (or open [demo.html](./demo.html) / [demo.mp4](./demo.mp4) in-repo).
+Watch a short capture on GitHub Pages: [demo.html](https://az9713.github.io/grokbot-game-dev-demo/demo.html) (or open [demo.html](./demo.html) / [demo.mp4](./demo.mp4) in-repo).
 ## How to Play
 
 ### Controls

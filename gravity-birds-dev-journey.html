@@ -705,7 +705,7 @@
     </li>
     <li>
       <span class="step">Re-home</span>
-      Push / re-home toward GitHub <code>az9713/grokbot-gravity-bird</code> (earlier private-create path succeeded where public 403’d; public name above is the playable home).
+      Push / re-home toward GitHub <code>az9713/grokbot-game-dev-demo</code> (earlier private-create path succeeded where public 403’d; public name above is the playable home).
     </li>
     <li>
       <span class="step">Laptop</span>
@@ -717,11 +717,11 @@
     </li>
     <li>
       <span class="step">Movement fix</span>
-      Typed-array bug in <code>scripts/puzzle_game.gd</code> fixed via Cursor Cloud Agent; squash-merged to GitHub <code>az9713/grokbot-gravity-bird</code> as PR #1 (<code>main</code> ~ <code>ae68b46</code>); also landed on Origin as <code>38d83fa</code>.
+      Typed-array bug in <code>scripts/puzzle_game.gd</code> fixed via Cursor Cloud Agent; squash-merged to GitHub <code>az9713/grokbot-game-dev-demo</code> as PR #1 (<code>main</code> ~ <code>ae68b46</code>); also landed on Origin as <code>38d83fa</code>.
     </li>
     <li>
       <span class="step">Levels fix</span>
-      Levels 2–5 redesigned (heads on EMPTY, BFS-validated) via a second Cloud Agent + GitHub <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a> (merged; squash commit <code>c8881f5</code> on GitHub <code>main</code>); levels synced to Origin <code>main</code> as <code>990a412</code>; level files copied to the laptop Downloads clone.
+      Levels 2–5 redesigned (heads on EMPTY, BFS-validated) via a second Cloud Agent + GitHub <a href="https://github.com/az9713/grokbot-game-dev-demo/pull/2">PR #2</a> (merged; squash commit <code>c8881f5</code> on GitHub <code>main</code>); levels synced to Origin <code>main</code> as <code>990a412</code>; level files copied to the laptop Downloads clone.
     </li>
   </ol>
 </section>
@@ -859,7 +859,7 @@
         <td>Devin <span class="arrow">→</span> Chief</td>
         <td>Re-home result</td>
         <td>
-          Local path ready; GitHub went private then public as <code>grokbot-gravity-bird</code>.
+          Local path ready; GitHub went private then public as <code>grokbot-game-dev-demo</code> (renamed from grokbot-gravity-bird).
           Origin git auth failed, so reconstruct/push GitHub then pull the laptop.
           Web export binaries still missing.
         </td>
@@ -871,7 +871,7 @@
           Playtested; found Issues A (movement dead) and B (levels 2–5 unwinnable).
           Opened Cloud Agents / PRs; later sent demystify notes
           (symptom / cause / fix / verify) plus a remote SHA table including
-          <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>
+          <a href="https://github.com/az9713/grokbot-game-dev-demo/pull/2">PR #2</a>
           then merge <code>c8881f5</code> / Origin <code>990a412</code>.
         </td>
       </tr>
@@ -947,7 +947,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>GitHub <code>az9713/grokbot-gravity-bird</code></td>
+        <td>GitHub <code>az9713/grokbot-game-dev-demo</code></td>
         <td>Movement fix merged (squash PR #1)</td>
         <td><code>main</code> ~ <code>ae68b46</code></td>
       </tr>
@@ -955,7 +955,7 @@
         <td>GitHub</td>
         <td>Levels 2–5 redesign</td>
         <td>Squash-merged PR #2 → <code>main</code> <code>c8881f5</code>
-          (<a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>)</td>
+          (<a href="https://github.com/az9713/grokbot-game-dev-demo/pull/2">PR #2</a>)</td>
       </tr>
       <tr>
         <td>Origin <code>az9713/tmp-98639729b424a5bb</code></td>
@@ -995,7 +995,7 @@
       </tr>
       <tr>
         <td>GitHub remote</td>
-        <td><code>github.com/az9713/grokbot-gravity-bird</code> (public repo name; playable home)</td>
+        <td><code>github.com/az9713/grokbot-game-dev-demo</code> (public repo name; playable home)</td>
       </tr>
       <tr>
         <td>Birth remote</td>
@@ -1171,11 +1171,11 @@
   <h2>14. Open leftovers / honest gaps</h2>
   <ul>
     <li><strong>Origin vs GitHub level bytes:</strong> GitHub <code>main</code> <code>c8881f5</code> (squash of
-      <a href="https://github.com/az9713/grokbot-gravity-bird/pull/2">PR #2</a>) and Origin <code>990a412</code> both fix levels 2–5,
+      <a href="https://github.com/az9713/grokbot-game-dev-demo/pull/2">PR #2</a>) and Origin <code>990a412</code> both fix levels 2–5,
       but layouts may differ slightly — cite the remote you are playing from.</li>
     <li><strong>No real HTML5 export artifacts:</strong> treat browser play as incomplete until you re-export from a local Godot with templates installed and confirm <code>.wasm</code> / <code>.pck</code>.</li>
     <li><strong>Gravity quirk (v1 engine):</strong> gravity is per-segment fall, not a rigid Snakebird-shaped body. Intentional-for-now engine quirk, not Issue A/B.</li>
-    <li><strong>Origin vs GitHub:</strong> two remotes exist (<code>az9713/tmp-98639729b424a5bb</code> and <code>az9713/grokbot-gravity-bird</code>); day-to-day work should use the GitHub remote you can clone and push without Origin auth friction — GitHub <code>main</code> now includes the levels squash <code>c8881f5</code>.</li>
+    <li><strong>Origin vs GitHub:</strong> two remotes exist (<code>az9713/tmp-98639729b424a5bb</code> and <code>az9713/grokbot-game-dev-demo</code>); day-to-day work should use the GitHub remote you can clone and push without Origin auth friction — GitHub <code>main</code> now includes the levels squash <code>c8881f5</code>.</li>
     <li><strong>Level depth:</strong> five levels is a vertical slice, not a commercial campaign. Difficulty / teaching curve can still be tuned by hand.</li>
     <li><strong>Art:</strong> Moss Ledger polish shipped on GitHub <code>main</code> <code>88ed6f0</code>;
       before/after README screenshots on <code>a61ae6b</code>. Remaining gaps: HTML5 export still incomplete;
@@ -1410,7 +1410,7 @@
         <td>PR #7 — art + audio packs</td>
         <td><span class="status-pill open">open</span> in flight</td>
         <td>branch <code>vera/v15-art-audio</code>
-          (<a href="https://github.com/az9713/grokbot-gravity-bird/pull/7">PR #7</a>
+          (<a href="https://github.com/az9713/grokbot-game-dev-demo/pull/7">PR #7</a>
           — Moss Ledger v1.5 art + Chord audio; not merged at publish time</td>
       </tr>
     </tbody>

@@ -80,7 +80,7 @@ godot4 project.godot
 ## PR Details
 
 - **Branch**: `cursor/moss-ledger-art-polish-c00d`
-- **PR**: https://github.com/az9713/grokbot-gravity-bird/pull/3
+- **PR**: https://github.com/az9713/grokbot-game-dev-demo/pull/3
 - **Base**: `main` (includes Issue A/B fixes)
 
 ## Troubleshooting
