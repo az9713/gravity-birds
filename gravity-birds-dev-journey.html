@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gravity Birds — Development Journey (demystified)</title>
+<meta name="description" content="Gravity Birds development journey including Moss Ledger brownfield art & UI polish.">
 <script>
 (async () => {
   const hash = location.hash;
   const a = await (await fetch("./journey.html.gz.b64.0")).text();
   const b = await (await fetch("./journey.html.gz.b64.1")).text();
-  const bin = Uint8Array.from(atob(a + b), c => c.charCodeAt(0));
+  const bin = Uint8Array.from(atob(a.trim() + b.trim()), c => c.charCodeAt(0));
   const ds = new DecompressionStream("gzip");
   const html = await new Response(new Blob([bin]).stream().pipeThrough(ds)).text();
   document.open();
@@ -22,6 +23,7 @@
 </script>
 </head>
 <body>
-<p style="font-family:system-ui,sans-serif;padding:2rem;color:#9aa8b8;background:#0f1419;margin:0;min-height:100vh">Loading Gravity Birds development journey…</p>
+<p style="font-family:system-ui,sans-serif;padding:2rem;color:#9aa8b8;background:#0f1419;margin:0;min-height:100vh">Loading Gravity Birds development journey (incl. Moss Ledger polish chapter)…</p>
+<noscript><p style="font-family:system-ui;padding:2rem">JavaScript required to load the development journey HTML.</p></noscript>
 </body>
 </html>
