@@ -182,19 +182,24 @@ func execute_move(direction: Vector2i):
 	# 4. Gravity loop
 	var gravity_steps = 0
 	var max_gravity_steps = 20
-	var segments_that_fell_last_step: Array[int] = []
+	var segments_that_fell_this_move: Dictionary = {}  # Track unique segments that fell
 	
 	while gravity_steps < max_gravity_steps:
-		segments_that_fell_last_step = apply_gravity()
-		if segments_that_fell_last_step.is_empty():
+		var segments_that_fell_this_step = apply_gravity()
+		if segments_that_fell_this_step.is_empty():
 			break
+		
+		# Accumulate segments that fell (use dict for uniqueness)
+		for seg_idx in segments_that_fell_this_step:
+			segments_that_fell_this_move[seg_idx] = true
+		
 		queue_redraw()
 		await get_tree().create_timer(FALL_DELAY).timeout
 		gravity_steps += 1
 	
 	# JUICE HOOK 2: Fall impact (after gravity settles)
-	# Emit impact signal for segments that came to rest
-	for seg_idx in segments_that_fell_last_step:
+	# Emit impact signal for segments that actually fell and came to rest
+	for seg_idx in segments_that_fell_this_move.keys():
 		if seg_idx < creature_segments.size():
 			fall_impact.emit(seg_idx, creature_segments[seg_idx])
 	
