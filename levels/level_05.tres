@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_level_data")
-level_name = "The Puzzle"
+level_name = "The Weave"
 grid_width = 12
-grid_height = 7
-tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-fruits = [Vector2i(2, 4), Vector2i(4, 4), Vector2i(9, 4)]
-exit_pos = Vector2i(11, 4)
-creature_start = [Vector2i(1, 4), Vector2i(1, 3)]
+grid_height = 8
+tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+fruits = [Vector2i(2, 5), Vector2i(5, 3), Vector2i(8, 5)]
+exit_pos = Vector2i(10, 2)
+creature_start = [Vector2i(1, 5), Vector2i(1, 4)]

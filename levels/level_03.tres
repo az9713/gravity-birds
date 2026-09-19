@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_level_data")
-level_name = "Stairway"
+level_name = "Step by Step"
 grid_width = 10
 grid_height = 8
-tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]
-fruits = [Vector2i(3, 5), Vector2i(5, 4), Vector2i(7, 3)]
-exit_pos = Vector2i(9, 2)
-creature_start = [Vector2i(1, 6), Vector2i(1, 5)]
+tiles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+fruits = [Vector2i(1, 5), Vector2i(2, 4), Vector2i(3, 3)]
+exit_pos = Vector2i(9, 0)
+creature_start = [Vector2i(0, 5), Vector2i(0, 4)]
