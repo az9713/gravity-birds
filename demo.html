@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gravity Birds — Demo</title>
+<style>
+  :root { --bg:#0f1419; --text:#e7ecf1; --muted:#9aa8b8; --accent:#7ec8a3; --border:#2e3a48; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  h1 { font-size: 1.5rem; margin: 0 0 0.35rem; }
+  .lede { color: var(--muted); margin: 0 0 1.25rem; }
+  video { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); background: #000; }
+  .nav { margin-top: 1.25rem; font-size: 0.95rem; }
+  a { color: #8ec8f0; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-top: 0.75rem; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Gravity Birds — Demo</h1>
+    <p class="lede">Short playthrough of the Godot puzzle build (Game Studio v1.5 work in progress).</p>
+    <video controls playsinline preload="metadata" poster="">
+      <source src="./demo.mp4" type="video/mp4">
+      Your browser does not support HTML5 video. <a href="./demo.mp4">Download the MP4</a>.
+    </video>
+    <p class="meta">Compressed for GitHub Pages (~0.5&nbsp;MB). Original capture was ~14&nbsp;MB.</p>
+    <p class="nav">
+      <a href="./">README</a> ·
+      <a href="./gravity-birds-dev-journey.html">Development journey</a> ·
+      <a href="./demo.mp4">Download MP4</a>
+    </p>
+  </div>
+</body>
+</html>

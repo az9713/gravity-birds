@@ -42,6 +42,10 @@ Request: polish art and UI on the current rules (Moss Ledger look), without chan
 **After** (Moss Ledger art pack + HUD):
 
 ![After polish](./game_ui_2.png)
+
+## Play the demo
+
+Watch a short capture on GitHub Pages: [demo.html](https://az9713.github.io/grokbot-gravity-bird/demo.html) (or open [demo.html](./demo.html) / [demo.mp4](./demo.mp4) in-repo).
 ## How to Play
 
 ### Controls
